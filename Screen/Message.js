@@ -1,6 +1,6 @@
-import {View} from "react-native";
+import { View } from "react-native";
 import firebase from "firebase/compat/app";
-import { GiftedChat,Bubble } from "react-native-gifted-chat";
+import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import React, { useEffect, useState, useCallback } from "react";
 import { db } from "../firebase";
 import useAuth from "../hooks/useAuth";
@@ -10,32 +10,34 @@ const Message = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const { currentUser } = useAuth();
 
+  
+
   useEffect(() => {
-    const generateId =
-      uid > currentUser.uid
-        ? currentUser.uid + "-" + uid
-        : uid + "-" + currentUser.uid;
-    db.collection("babi")
-      .doc(generateId)
-      .collection("messages")
-      .orderBy("createdAt", "desc")
-      .onSnapshot((querySnap) => {
-        const allmsg = querySnap.docs.map((docSanp) => {
-          const data = docSanp.data();
-          if (data.createdAt) {
-            return {
-              ...docSanp.data(),
-              createdAt: docSanp.data().createdAt.toDate(),
-            };
-          } else {
-            return {
-              ...docSanp.data(),
-              createdAt: new Date(),
-            };
-          }
+      const generateId =
+        uid > currentUser.uid
+          ? currentUser.uid + "-" + uid
+          : uid + "-" + currentUser.uid;
+      db.collection("babi")
+        .doc(generateId)
+        .collection("messages")
+        .orderBy("createdAt", "desc")
+        .onSnapshot((querySnap) => {
+          const allmsg = querySnap.docs.map((docSanp) => {
+            const data = docSanp.data();
+            if (data.createdAt) {
+              return {
+                ...docSanp.data(),
+                createdAt: docSanp.data().createdAt.toDate(),
+              };
+            } else {
+              return {
+                ...docSanp.data(),
+                createdAt: new Date(),
+              };
+            }
+          });
+          setMessages(allmsg);
         });
-        setMessages(allmsg);
-      });
   }, []);
 
   const onSend = (messagesArray) => {
@@ -70,25 +72,23 @@ const Message = ({ route }) => {
           onSend={(messages) => onSend(messages)}
           user={{
             _id: currentUser.uid,
-            avatar:null,
+            avatar: null,
           }}
-          renderBubble={(props)=>{
-            return <Bubble
-            {...props}
-            wrapperStyle={{
-              right: {
-                backgroundColor:"#FFA500",
-
-              },
-              left : {
-                backgroundColor:"white"
-              }
-              
-            }}
-          />
-        }}
-
-          
+          renderBubble={(props) => {
+            return (
+              <Bubble
+                {...props}
+                wrapperStyle={{
+                  right: {
+                    backgroundColor: "#FFA500",
+                  },
+                  left: {
+                    backgroundColor: "white",
+                  },
+                }}
+              />
+            );
+          }}
         />
       </View>
     </>

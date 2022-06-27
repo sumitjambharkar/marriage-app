@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, Image } from "react-native";
-import { Avatar, VStack, Center, NativeBaseProvider, Input } from "native-base";
+import { View, Text, SafeAreaView, StyleSheet, Image, ScrollView } from "react-native";
 import {db } from "../firebase";
 import useAuth from "../hooks/useAuth";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 
 
@@ -13,6 +11,8 @@ const Profile = () => {
   const {logout,currentUser}  = useAuth()
   const [image,setImage] = useState(null)
   const [data, setData] = useState("");
+  const [sdata,setSData] = useState("")
+  console.log(sdata)
 
   useEffect(() => {
       if (currentUser.uid) {
@@ -22,73 +22,104 @@ const Profile = () => {
             setData(snapshot.data());
         });
       }
+      db.collection("users").doc(currentUser.uid).collection("profile")
   }, [currentUser]);
 
   
 
   return (
     <>
-    <SafeAreaProvider>
-      <NativeBaseProvider>
-        <View style={styles.head}>
-          <View style={styles.container}>
-            <Text style={styles.logo}>MarriageOrbit</Text>
-            <Text onPress={logout} style={styles.logo}>
+    
+     <SafeAreaView>
+     <ScrollView>
+        <View style={styles.section}>
+         <View style={{backgroundColor:"#FFA500",padding:10}}>
+         <View style={styles.container}>
+            <Text style={{fontSize:18}}>MarriageOrbit</Text>
+            <Text style={{fontSize:18}} onPress={logout}>
               Logout
             </Text>
           </View>
-          <Center mt="10">
-            <Avatar
-              size="2xl"
+          
+          <View style={styles.logo} >
+          <Image style={{width:150,height:150,borderRadius:75}}
               source={{uri:data.image}}
             />
-            
-          </Center>
-          <Center>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                flexDirection: "column",
-              }}
-            >
-              <View
-                style={{ display: "flex", flexDirection: "row", margin: 8 }}
-              >
-                
-                <Text style={{ fontSize: 18 }}>Name :</Text>
-                <Text style={{ fontSize: 18 }}> {data.displayName}</Text>
-              </View>
-              <View
-                style={{ display: "flex", flexDirection: "row", margin: 8 }}
-              >
-                <Text style={{ fontSize: 18 }}>Gender :</Text>
-                <Text style={{ fontSize: 18 }}> {data.gender}</Text>
-              </View>
-              <View
-                style={{ display: "flex", flexDirection: "row", margin: 8 }}
-              >
-                <Text style={{ fontSize: 18 }}>Age :</Text>
-                <Text style={{ fontSize: 18 }}> {data.birth}</Text>
-              </View>
-              <View
-                style={{ display: "flex", flexDirection: "row", margin: 8 }}
-              >
-                <Text style={{ fontSize: 18 }}>Height :</Text>
-                <Text style={{ fontSize: 18 }}> 5.7</Text>
-              </View>
-              <View
-                style={{ display: "flex", flexDirection: "row", margin: 8 }}
-              >
-                <Text style={{ fontSize: 18 }}>Country :</Text>
-                <Text style={{ fontSize: 18 }}> India</Text>
-              </View>
-              <Text onPress={()=>navigation.navigate('Edit')}>Edit Profile</Text>
+          </View>
+         </View>
+
+          <View style={{display:"flex", flexDirection:"row", borderBottomWidth:1, borderBottomColor:"#ccc"}}>
+           <View style={{width:"35%", padding:15}}>
+            <Text style={{fontSize:18,}}>Name   </Text>
+           </View>
+           <View style={{width:"65%",paddingTop:15}}>
+            <Text style={{fontSize:18,}}>{data.displayName} </Text>
+            </View>                           
+           </View>
+
+           <View style={{display:"flex", flexDirection:"row", borderBottomWidth:1, borderBottomColor:"#ccc"}}>
+           <View style={{width:"35%", padding:15}}>
+            <Text style={{fontSize:18,}}>Gender </Text>
+           </View>
+           <View style={{width:"65%",paddingTop:15}}>
+            <Text style={{fontSize:18,}}>{data.gender}</Text>
+            </View>                           
+           </View>
+
+           <View style={{display:"flex", flexDirection:"row", borderBottomWidth:1, borderBottomColor:"#ccc"}}>
+           <View style={{width:"35%", padding:15}}>
+            <Text style={{fontSize:18,}}>Age       </Text>
+           </View>
+           <View style={{width:"65%",paddingTop:15}}>
+            <Text style={{fontSize:18,}}>{data.birth}</Text>
+            </View>                           
+           </View>
+
+           <View style={{display:"flex", flexDirection:"row", borderBottomWidth:1, borderBottomColor:"#ccc"}}>
+           <View style={{width:"35%", padding:15}}>
+            <Text style={{fontSize:18,}}>Height   </Text>
+           </View>
+           <View style={{width:"65%",paddingTop:15}}>
+            <Text style={{fontSize:18,}}>{data.displayName} </Text>
+            </View>                           
+           </View>
+
+           <View style={{display:"flex", flexDirection:"row", borderBottomWidth:1, borderBottomColor:"#ccc"}}>
+           <View style={{width:"35%", padding:15}}>
+            <Text style={{fontSize:18,}}>Mobile No  </Text>
+           </View>
+           <View style={{width:"65%",paddingTop:15}}>
+            <Text style={{fontSize:18,}}>{data.number}</Text>
+            </View>                           
+           </View>
+
+           <View style={{display:"flex", flexDirection:"row", borderBottomWidth:1, borderBottomColor:"#ccc"}}>
+           <View style={{width:"35%", padding:15}}>
+            <Text style={{fontSize:18,}}>Email Id</Text>
+           </View>
+           <View style={{width:"65%",paddingTop:15}}>
+            <Text style={{fontSize:18,}}>{data.email}</Text>
+            </View>                           
+           </View>
+
+           <View style={{display:"flex", flexDirection:"row", borderBottomWidth:1, borderBottomColor:"#ccc"}}>
+           <View style={{width:"35%", padding:15}}>
+            <Text style={{fontSize:18,}}>City </Text>
+           </View>
+           <View style={{width:"65%",paddingTop:15}}>
+            <Text style={{fontSize:18,}}>{data.displayName} Jambhakar</Text>
+            </View>                           
+           </View>
+           
+           <View style={{padding:10, display:"flex", alignItems:"center"}}>
+           <Text style={styles.button} onPress={()=>navigation.navigate('Edit')}>Edit Profile</Text>
+           </View>
+           
+              
             </View>
-          </Center>
-        </View>
-      </NativeBaseProvider>
-      </SafeAreaProvider>
+        </ScrollView>
+        </SafeAreaView>
+      
     </>
   );
 };
@@ -96,20 +127,32 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
+  section: {
+    height: "100%",
+    width: "100%",
+    paddingTop:30
+  },
   container: {
     flexDirection: "row",
     display: "flex",
     justifyContent: "space-between",
-    margin: 30,
+    padding:10,
   },
   logo: {
-    fontSize: 22,
-    
+    display: "flex",
+    alignItems:"center",
+    marginTop:30,
   },
-  head: {
-    backgroundColor: "#FFA50080",
-    height: "30%",
-    padding: 12,
-    width: "100%",
+  button: {
+    width: "50%",
+    marginTop:1,
+    height: 45,
+    textAlign: "center",
+    backgroundColor: "#FFA500",
+    padding: 10,
+    letterSpacing:2,
+    borderRadius:20,
+
   },
+
 });

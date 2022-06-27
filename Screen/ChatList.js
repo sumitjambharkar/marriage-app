@@ -1,10 +1,11 @@
-import { View, Text,StyleSheet,Image, TouchableOpacity} from "react-native";
+import { View, Text,StyleSheet,Image, TouchableOpacity, SafeAreaView} from "react-native";
 import React from "react";
 
 
 const ChatList = ({doc,selectUser}) => {
   return (
-    <TouchableOpacity onPress={()=>selectUser(doc)}>
+   <SafeAreaView>
+     <TouchableOpacity onPress={()=>selectUser(doc)}>
         <View style={styles.container}>
       <View style={styles.profle}>
         <View style={styles.image}>
@@ -20,6 +21,7 @@ const ChatList = ({doc,selectUser}) => {
       </View>
     </View>
     </TouchableOpacity>
+   </SafeAreaView>
   );
 };
 

@@ -7,7 +7,7 @@ const User = ({doc,getData}) => {
        <Image style={styles.image} source={{uri:doc.data.image}}alt="image"/>
        <View style={styles.details}>
        <Text style={styles.title}>{doc.data.displayName}</Text>
-       <Text style={styles.text}>Gender   :  24 Yrs </Text>
+       <Text style={styles.text}>Age   :  24 Yrs </Text>
        <Text style={styles.text}>Height    :  5.2</Text>
        <Text style={styles.text} onPress={()=>getData(doc)}>Send Message</Text>
        </View>

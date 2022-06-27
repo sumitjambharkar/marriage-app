@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { View ,Text} from "react-native";
+import { View ,Text, SafeAreaView} from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import useAuth from "../hooks/useAuth";
@@ -39,8 +39,10 @@ const Chat = () => {
 
   return (
     <>
-    <View>
+    <SafeAreaView>
+    <View style={{marginBottom:10}}>
       <Text></Text>
+    
     </View>
     {userChat.map((doc,i)=>(
       <ChatList  
@@ -49,6 +51,7 @@ const Chat = () => {
       selectUser={selectUser}
    />
     ))}
+    </SafeAreaView>
     </>
   );
 };

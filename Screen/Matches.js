@@ -16,7 +16,7 @@ const Matches = () => {
   console.log(data);
  
   useEffect(() => {
-    db.collection("users").onSnapshot((snapshot) => {
+    const unSubcription = db.collection("users").onSnapshot((snapshot) => {
       setData(
         snapshot.docs
         .filter((doc)=>(doc.id!==currentUser.uid))
@@ -26,6 +26,7 @@ const Matches = () => {
         }))
       );
       });
+      return ()=> unSubcription()
   }, []);
 
   const getData =async(doc) => {
