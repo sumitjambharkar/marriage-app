@@ -12,7 +12,6 @@ const Profile = () => {
   const [image,setImage] = useState(null)
   const [data, setData] = useState("");
   const [sdata,setSData] = useState("")
-  console.log(sdata)
 
   useEffect(() => {
       if (currentUser.uid) {
@@ -23,6 +22,12 @@ const Profile = () => {
         });
       }
       db.collection("users").doc(currentUser.uid).collection("profile")
+      .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            setSData(doc.data());
+          });
+        });
   }, [currentUser]);
 
   
@@ -42,7 +47,7 @@ const Profile = () => {
           </View>
           
           <View style={styles.logo} >
-          <Image style={{width:150,height:150,borderRadius:75}}
+          <Image style={{width:150,height:150,borderRadius:75,backgroundColor:"gray"}}
               source={{uri:data.image}}
             />
           </View>
@@ -80,7 +85,7 @@ const Profile = () => {
             <Text style={{fontSize:18,}}>Height   </Text>
            </View>
            <View style={{width:"65%",paddingTop:15}}>
-            <Text style={{fontSize:18,}}>{data.displayName} </Text>
+            <Text style={{fontSize:18,}}>{sdata.height} </Text>
             </View>                           
            </View>
 
@@ -107,7 +112,7 @@ const Profile = () => {
             <Text style={{fontSize:18,}}>City </Text>
            </View>
            <View style={{width:"65%",paddingTop:15}}>
-            <Text style={{fontSize:18,}}>{data.displayName} Jambhakar</Text>
+            <Text style={{fontSize:18,}}>{sdata.city}</Text>
             </View>                           
            </View>
            

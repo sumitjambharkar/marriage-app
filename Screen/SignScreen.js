@@ -123,7 +123,7 @@ const SignScreen = () => {
                 </Select>
                 <FormControl>
                   <FormControl.Label>Mobile No.</FormControl.Label>
-                  <Input  value={number} onChangeText={(itemNumber)=>setNumber(itemNumber)} />
+                  <Input keyboardType="numeric"  value={number} onChangeText={(itemNumber)=>setNumber(itemNumber)} />
                 </FormControl>
                 <FormControl>
                 <FormControl.Label>Birth Date</FormControl.Label>

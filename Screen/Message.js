@@ -17,7 +17,7 @@ const Message = ({ route }) => {
         uid > currentUser.uid
           ? currentUser.uid + "-" + uid
           : uid + "-" + currentUser.uid;
-      db.collection("babi")
+      const unSub = db.collection("babi")
         .doc(generateId)
         .collection("messages")
         .orderBy("createdAt", "desc")
@@ -38,6 +38,7 @@ const Message = ({ route }) => {
           });
           setMessages(allmsg);
         });
+        return() => unSub()
   }, []);
 
   const onSend = (messagesArray) => {

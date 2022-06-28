@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, Image,Button } from "react-native";
 import User from "./User";
 import { useNavigation } from "@react-navigation/native";
 import useAuth from "../hooks/useAuth";
-// import Swiper from "react-native-deck-swiper";
+
 
 
 const Matches = () => {
@@ -16,7 +16,7 @@ const Matches = () => {
   console.log(data);
  
   useEffect(() => {
-    const unSubcription = db.collection("users").onSnapshot((snapshot) => {
+    const unSub= db.collection("users").onSnapshot((snapshot) => {
       setData(
         snapshot.docs
         .filter((doc)=>(doc.id!==currentUser.uid))
@@ -26,7 +26,7 @@ const Matches = () => {
         }))
       );
       });
-      return ()=> unSubcription()
+      return ()=> unSub()
   }, []);
 
   const getData =async(doc) => {

@@ -1,38 +1,44 @@
 import { View, Text,StyleSheet,Image } from 'react-native'
 import React from 'react'
 
+
 const User = ({doc,getData}) => {
   return (
-    <View>
-       <Image style={styles.image} source={{uri:doc.data.image}}alt="image"/>
+    <View style={{width:"100%",height:"100%",display:"flex",alignItems:"center"}}>
        <View style={styles.details}>
+       <View style={{height:"70%",width:"100%",alignItems:"center"}}><Image style={styles.image} source={{uri:doc.data.image}}alt="image"/></View>
+       <View style={styles.card}>
        <Text style={styles.title}>{doc.data.displayName}</Text>
        <Text style={styles.text}>Age   :  24 Yrs </Text>
        <Text style={styles.text}>Height    :  5.2</Text>
        <Text style={styles.text} onPress={()=>getData(doc)}>Send Message</Text>
        </View>
-      </View>
+       </View>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
     details : {
         position:"absolute",
-        paddingTop:6,
+        paddingTop:30,
         paddingBottom:6,
-        opacity:0.8,
         bottom:0,
         width:"100%",
-        paddingLeft:30,
-        backgroundColor:"#000002",
+        height: "100%",
         borderBottomLeftRadius:24,
-        borderBottomRightRadius:24
+        borderBottomRightRadius:24,
+        opacity:0.9,
+      
+    
     },
     image : {
         height:"100%",
         width:"100%",
-        borderRadius:24,
-        position:"relative"
+        resizeMode:"cover",
+        position:"relative",
+        borderTopRightRadius:24,
+        borderTopLeftRadius:24,
 
     },
     title : {
@@ -44,6 +50,14 @@ const styles = StyleSheet.create({
         fontSize:18,
         fontWeight:"bold",
         color:"#FFA500"
+    },
+    card : {
+        paddingLeft:"5%",
+        paddingTop:"5%",
+        backgroundColor:"black",
+        height:"30%",
+        borderBottomLeftRadius:24,
+        borderBottomRightRadius:24
     }
 })
 
