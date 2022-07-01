@@ -3,15 +3,18 @@ import { View, Text, SafeAreaView, StyleSheet, Image, ScrollView } from "react-n
 import {db } from "../firebase";
 import useAuth from "../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
+import UserAvatar from 'react-native-user-avatar';
+
+
 
 
 const Profile = () => {
-
+  
   const navigation = useNavigation()
   const {logout,currentUser}  = useAuth()
-  const [image,setImage] = useState(null)
   const [data, setData] = useState("");
   const [sdata,setSData] = useState("")
+
 
   useEffect(() => {
       if (currentUser.uid) {
@@ -31,6 +34,13 @@ const Profile = () => {
   }, [currentUser]);
 
   
+  
+  function calculate_age(dob) { 
+    var diff_ms = Date.now() - dob.getTime();
+    var age_dt = new Date(diff_ms); 
+  
+    return Math.abs(age_dt.getUTCFullYear() - 1970);
+  }
 
   return (
     <>
@@ -47,9 +57,9 @@ const Profile = () => {
           </View>
           
           <View style={styles.logo} >
-          <Image style={{width:150,height:150,borderRadius:75,backgroundColor:"gray"}}
-              source={{uri:data.image}}
-            />
+             <UserAvatar size={150} name={data.displayName}
+             src={data.image || null }
+             />
           </View>
          </View>
 
@@ -76,7 +86,7 @@ const Profile = () => {
             <Text style={{fontSize:18,}}>Age       </Text>
            </View>
            <View style={{width:"65%",paddingTop:15}}>
-            <Text style={{fontSize:18,}}>{data.birth}</Text>
+            <Text style={{fontSize:18,}}>{calculate_age(new Date(data.birth))}</Text>
             </View>                           
            </View>
 

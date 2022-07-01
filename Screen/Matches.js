@@ -13,7 +13,8 @@ const Matches = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigation();
   const {currentUser }= useAuth()
-  console.log(data);
+  
+  
  
   useEffect(() => {
     const unSub= db.collection("users").onSnapshot((snapshot) => {
@@ -54,7 +55,7 @@ const Matches = () => {
       activeDotStyle={{display:"none"}}
         >
         {data.map((doc) => (
-          <User key={doc.id} getData={getData} uid={doc.data.uid} doc={doc} />
+          <User key={doc.id} birth={doc.data.birth} getData={getData} uid={doc.data.uid} doc={doc} />
         ))}
       </Swiper>
     </View>

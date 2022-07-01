@@ -17,22 +17,28 @@ const TwoPage = () => {
   const [qualification,setQualification] = useState("")
   const [collage,setCollage] = useState("")
   const [income,setIncome] = useState("")
+  const [error,setError] = useState("")
     const navigation = useNavigation()
     const {currentUser} = useAuth()
    
    const submit = () => {
-        if(currentUser.uid){
-          db.collection("users").doc(currentUser.uid).collection("details").add({
-            religion:religion,
-            tounge:tounge,
-            work:work,
-            income:income,
-            collage:collage,
-            qualification:qualification
-          })
-            
+        if (!religion || !tounge || !work || !qualification || !collage || !income) {
+          setError("fill out the Details")
+        } else {
+          if(currentUser.uid){
+            db.collection("users").doc(currentUser.uid).collection("details").add({
+              religion:religion,
+              tounge:tounge,
+              work:work,
+              income:income,
+              collage:collage,
+              qualification:qualification
+            })
+              
+          }
+          navigation.navigate('Home')
+          
         }
-        navigation.navigate('Home')
    }
     
   return (
@@ -43,6 +49,7 @@ const TwoPage = () => {
       <ScrollView maxW="300" h="80" _contentContainerStyle={{px: "4px",minW: "72"}}>
       <Box w="100%" maxW="300" py="8">
         <Text >Just a few question your about.</Text>
+        <Text style={{color:"red"}}>{error}</Text>
         <Text style={{marginTop:15,color:"#0008"}}>Your Religion</Text>
         <Select  minWidth="200" accessibilityLabel="Choose Religion" placeholder="Choose Religion" mt={1} selectedValue={religion}  onValueChange={(itemState)=>setReligion(itemState)} >
           {religionArry.map(ele=>(

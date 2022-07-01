@@ -6,123 +6,160 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
+  ToastAndroid,
+  Alert,
 } from "react-native";
 import React from "react";
 import { db } from "../firebase";
 import useAuth from "../hooks/useAuth";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { updateEmail, updatePassword } from "firebase/auth";
-
+import * as ImagePicker from "expo-image-picker"; // not react-image-picker
+import { storage } from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc, updateDoc} from "firebase/firestore";
+import UserAvatar from 'react-native-user-avatar';
 
 const ProfileEdit = () => {
-  const {currentUser} = useAuth()
-  const [data,setData] = useState("")
-  const [number,setNumber] = useState("")
-  const [email,setEmail] = useState("")
-  const [password,setPassword] = useState("")
+  const { currentUser } = useAuth();
+  const [data, setData] = useState("");
+  const [number, setNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [pic, setPic] = useState("");
+
   useEffect(() => {
-    const unSub = db.collection("users").doc(currentUser.uid).onSnapshot(snapshot=>(
-      setData(snapshot.data())
-    ))
-  
+    const unSub = db
+      .collection("users")
+      .doc(currentUser.uid)
+      .onSnapshot((snapshot) => setData(snapshot.data()));
     return () => {
-      unSub()
-    }
-  }, [])
-  
- const updateNumber =(e)=> {
-  e.preventDefault();
+      unSub();
+    };
+  }, []);
+
+  const updateNumber = (e) => {
+    e.preventDefault();
     db.collection("users").doc(currentUser.uid).update({
-     number:number
-    })
-    setNumber("")
- }
- const changeEmail =async (e) => {
-  e.preventDefault();
-    try{
-      const result = await updateEmail(currentUser,email)
+      number: number,
+    });
+    setNumber("");
+  };
+
+  const changeEmail = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await updateEmail(currentUser, email);
       db.collection("users").doc(currentUser.uid).update({
-        email:email
-      })
+        email: email,
+      });
       console.log(result);
-    }
-    catch(error){
+    } catch (error) {
       console.log(error);
     }
-    setEmail("")
- }
- const changePassword =async(e) => {
-  e.preventDefault();
+    setEmail("");
+  };
+  const changePassword = async (e) => {
+    e.preventDefault();
     try {
-      const result = await updatePassword(currentUser,password)
-      console.log(result)
+      const result = await updatePassword(currentUser, password);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
     }
-    catch(error){
-      console.log(error)
+    setPassword("");
+  };
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    console.log(result);
+    if (!result.cancelled) {
+      try {
+        const imgRef = ref(storage, "image.jpg");
+        const img = await fetch(result.uri);
+        const bytes = await img.blob();
+        const snap = await uploadBytes(imgRef, bytes);
+        console.log(snap.ref.fullPath);
+        const url = await getDownloadURL(ref(storage, snap.ref.fullPath));
+        await updateDoc(doc(db, "users", currentUser.uid), {
+          image: url,
+          avatarPath: snap.ref.fullPath,
+        });
+        console.log(url);
+        setPic("");
+      } catch (err) {
+        console.log(err);
+      }
     }
-    setPassword("")
-  }
-  console.log(data.displayName);
+  };
+
   return (
     <SafeAreaView style={styles.screen}>
       <ScrollView>
-        <View style={styles.img}>
-          <Image
-            style={{ width: 120, height: 120, borderRadius: 60,backgroundColor:"gray" }}
-            source={{ uri: data.image }}
-          />
-          <Text style={{ paddingTop: 15, fontSize: 26 }}>{data.displayName}</Text>
-        </View>
+        <TouchableOpacity onPress={pickImage}>
+          <View style={styles.img}>
+             <UserAvatar size={150} name={data.displayName}
+             src={data.image || null }
+             />
+            <Text style={{ paddingTop: 15, fontSize: 26 }}>
+              {data.displayName}
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         <View style={styles.form}>
           <Text style={styles.lable}>Mobile No</Text>
 
           <TextInput
             keyboardType="numeric"
-            onChangeText={(text)=>setNumber(text)}
+            onChangeText={(text) => setNumber(text)}
             style={styles.input}
             placeholder="Type here to"
             value={number}
           ></TextInput>
 
-          <TouchableOpacity disabled={!number}  onPress={updateNumber}>
-         <View style={{display:"flex", alignItems:"center"}}>
-         <Text style={styles.button}>Update Contact</Text>
-         </View>
-         </TouchableOpacity>
-         
+          <TouchableOpacity disabled={!number} onPress={updateNumber}>
+            <View style={{ display: "flex", alignItems: "center" }}>
+              <Text style={styles.button}>Update Contact</Text>
+            </View>
+          </TouchableOpacity>
 
           <Text style={styles.lable}>Email id</Text>
 
           <TextInput
-          onChangeText={(text)=>setEmail(text)}
-          value={email}
+            onChangeText={(text) => setEmail(text)}
+            value={email}
             style={styles.input}
             placeholder="Type here to"
           ></TextInput>
 
-         <TouchableOpacity disabled={!email}  onPress={changeEmail}>
-         <View style={{display:"flex", alignItems:"center"}}>
-         <Text style={styles.button}>Change Email Id</Text>
-         </View>
-         </TouchableOpacity>
+          <TouchableOpacity disabled={!email} onPress={changeEmail}>
+            <View style={{ display: "flex", alignItems: "center" }}>
+              <Text style={styles.button}>Change Email Id</Text>
+            </View>
+          </TouchableOpacity>
 
           <Text style={styles.lable}>Password</Text>
 
           <TextInput
-          onChangeText={(text)=>setPassword(text)}
-          value={password}
+            onChangeText={(text) => setPassword(text)}
+            value={password}
             style={styles.input}
             placeholder="Type here to"
           ></TextInput>
 
-         <TouchableOpacity disabled={!password}  onPress={changePassword}>
-         <View style={{display:"flex", alignItems:"center"}}>
-         <Text style={styles.button}>Change Password</Text>
-         </View>
-         </TouchableOpacity>
-
+          <TouchableOpacity disabled={!password} onPress={changePassword}>
+            <View style={{ display: "flex", alignItems: "center" }}>
+              <Text style={styles.button}>Change Password</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -140,7 +177,7 @@ const styles = StyleSheet.create({
     borderColor: "#ffa500",
     borderWidth: 1,
     paddingLeft: 10,
-    borderRadius:10,
+    borderRadius: 10,
   },
   img: {
     width: "100%",
@@ -158,18 +195,16 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-   width: "50%",
+    width: "50%",
     marginTop: 20,
     height: 40,
     textAlign: "center",
     backgroundColor: "#FFA500",
-    borderRadius:20,
+    borderRadius: 20,
     padding: 10,
-    letterSpacing:2,
-    borderColor:"black",
-    borderWidth:1
-
-
+    letterSpacing: 2,
+    borderColor: "black",
+    borderWidth: 1,
   },
 });
 

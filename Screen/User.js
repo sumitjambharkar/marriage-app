@@ -2,14 +2,22 @@ import { View, Text,StyleSheet,Image } from 'react-native'
 import React from 'react'
 
 
-const User = ({doc,getData}) => {
+const User = ({doc,getData,birth}) => {
+
+    function calculate_age(dob) { 
+        var diff_ms = Date.now() - dob.getTime();
+        var age_dt = new Date(diff_ms); 
+      
+        return Math.abs(age_dt.getUTCFullYear() - 1970);
+    }
+
   return (
     <View style={{width:"100%",height:"100%",display:"flex",alignItems:"center"}}>
        <View style={styles.details}>
        <View style={{height:"70%",width:"100%",alignItems:"center"}}><Image style={styles.image} source={{uri:doc.data.image}}alt="image"/></View>
        <View style={styles.card}>
        <Text style={styles.title}>{doc.data.displayName}</Text>
-       <Text style={styles.text}>Age   :  24 Yrs </Text>
+       <Text style={styles.text}>Age   :  {calculate_age(new Date(birth))}Yrs </Text>
        <Text style={styles.text}>Height    :  5.2</Text>
        <Text style={styles.text} onPress={()=>getData(doc)}>Send Message</Text>
        </View>

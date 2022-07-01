@@ -36,7 +36,7 @@ const Home = () => {
 
   return (
      
-        <BottomNavigation theme={theme}
+      <BottomNavigation theme={theme}
       navigationState={{ index, routes }}
       onIndexChange={setIndex}
       renderScene={renderScene}

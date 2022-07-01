@@ -44,7 +44,7 @@ const SignScreen = () => {
           password,
         );
         await createUserCollecton(user, { displayName,birth, number, gender,profile });
-        navigation.navigate('Profile') 
+        navigation.navigate('ProfileDetails') 
         
       }catch (err) {
         navigation.navigate('SignUp')

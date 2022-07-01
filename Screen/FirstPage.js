@@ -47,10 +47,15 @@ const FirstPage = () => {
     const [diet,setDiet] = useState("")
     const [height,setHeight] = useState("")
     const [community,setCommunity] = useState("")
+    const [error,setError] = useState("")
     const navigation = useNavigation()
     const {currentUser} = useAuth()
+
     const submit = () => {
-      if(currentUser.uid){
+      if (!state || !city || !marital || !diet || !height || !community) {
+        setError("fill out the Details")
+      }else {
+        if(currentUser.uid){
           db.collection("users").doc(currentUser.uid).collection("profile").add({
             state:state,
             city:city,
@@ -62,6 +67,7 @@ const FirstPage = () => {
             
         }
       navigation.navigate('Details')
+      }
     }
     
   return (
@@ -72,6 +78,7 @@ const FirstPage = () => {
       <ScrollView maxW="300" h="80" _contentContainerStyle={{px: "4px",minW: "72"}}>
       <Box w="100%" maxW="300" py="8">
           <Text >Thanks for Registering. Now let's build Profile</Text>
+          <Text style={{color:"red"}}>{error}</Text>
           <Text style={{marginTop:15,color:"#0008"}}>He lives in*</Text>
         <Select  minWidth="200" accessibilityLabel="Choose State" placeholder="Choose State" mt={1} selectedValue={state}  onValueChange={(itemState)=>setState(itemState)} >
           {stateArry.map(ele=>(
