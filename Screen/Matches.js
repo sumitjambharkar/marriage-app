@@ -11,11 +11,10 @@ import useAuth from "../hooks/useAuth";
 const Matches = () => {
   
   const [data, setData] = useState([]);
+  const [profile,setProfile] = useState('')
   const navigation = useNavigation();
   const {currentUser }= useAuth()
   
-  
- 
   useEffect(() => {
     const unSub= db.collection("users").onSnapshot((snapshot) => {
       setData(
@@ -30,6 +29,15 @@ const Matches = () => {
       return ()=> unSub()
   }, []);
 
+  useEffect(() => {
+    if (currentUser.uid) {
+      db.collection("users").doc(currentUser.uid).onSnapshot(snapshot=>(
+        setProfile(snapshot.data())
+      ))
+    }
+  }, [currentUser.uid])
+  
+
   const getData =async(doc) => {
       const uid = doc.data.uid
       const displayName = doc.data.displayName
@@ -38,8 +46,15 @@ const Matches = () => {
       db.collection("users").doc(currentUser.uid).collection("chat").doc(uid).set({
         uid,
         displayName,
-        image:image || null
+        image:image || null,
       })
+      if (uid) {
+        db.collection("users").doc(uid).collection("chat").doc(currentUser.uid).set({
+          uid : currentUser.uid,
+          displayName: profile.displayName,
+          image : profile.image || null,
+        })
+      }
       navigation.navigate("Chat",{
         uid,displayName,image
         })

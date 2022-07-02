@@ -105,9 +105,7 @@ const ProfileEdit = () => {
       <ScrollView>
         <TouchableOpacity onPress={pickImage}>
           <View style={styles.img}>
-             <UserAvatar size={150} name={data.displayName}
-             src={data.image || null }
-             />
+          <Image style={{width:150,height:150,backgroundColor:"#ccc",borderRadius:70}} source={{uri:data.image}}/>
             <Text style={{ paddingTop: 15, fontSize: 26 }}>
               {data.displayName}
             </Text>

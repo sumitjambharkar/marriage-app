@@ -1,8 +1,32 @@
 import { View, Text,StyleSheet,Image, TouchableOpacity, SafeAreaView} from "react-native";
 import React from "react";
+import { useState, useEffect } from "react";
+import useAuth from "../hooks/useAuth";
+import { db } from "../firebase";
 
 
 const ChatList = ({doc,selectUser}) => {
+
+  const {currentUser} = useAuth()
+  const uid = doc.data.uid
+
+  const [lastMessage,setLastMessage] = useState('')
+
+  useEffect(() => {
+    
+      const generateId =
+        uid > currentUser.uid
+          ? currentUser.uid + "-" + uid
+          : uid + "-" + currentUser.uid;  
+      if (generateId) {
+      db.collection("chat").doc(generateId).collection("messages")
+       .orderBy("createdAt", "desc").onSnapshot(snapshot=>(
+        setLastMessage(snapshot.docs[0]?.data())
+      ))
+    }
+   
+  }, [])
+  
   return (
    <SafeAreaView>
      <TouchableOpacity onPress={()=>selectUser(doc)}>
@@ -13,11 +37,11 @@ const ChatList = ({doc,selectUser}) => {
         </View>
         <View style={styles.name}>
             <Text style={{fontSize:20,fontWeight:"700"}}>{doc.data.displayName}</Text>
-            <Text>Message</Text>
+            <Text>{lastMessage.text}</Text>
         </View>
       </View>
       <View>
-        <Text>Time</Text>
+        <Text>{new Date(lastMessage.createdAt?.toDate()).toLocaleTimeString("en-US",{hour: 'numeric', hour12: true })}</Text>
       </View>
     </View>
     </TouchableOpacity>

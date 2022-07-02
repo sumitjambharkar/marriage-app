@@ -12,6 +12,7 @@ const Chat = () => {
   const { currentUser } = useAuth();
   const navigation = useNavigation()
   console.log(userChat);
+
    
   useEffect(() => {
       if (currentUser.uid) {
@@ -36,6 +37,7 @@ const Chat = () => {
     navigation.navigate("SendMessage",{displayName,image,uid })
     
   }
+
 
   return (
     <>

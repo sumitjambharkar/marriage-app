@@ -17,7 +17,7 @@ const Message = ({ route }) => {
         uid > currentUser.uid
           ? currentUser.uid + "-" + uid
           : uid + "-" + currentUser.uid;
-      const unSub = db.collection("babi")
+      const unSub = db.collection("chat")
         .doc(generateId)
         .collection("messages")
         .orderBy("createdAt", "desc")
@@ -56,7 +56,7 @@ const Message = ({ route }) => {
       uid > currentUser.uid
         ? currentUser.uid + "-" + uid
         : uid + "-" + currentUser.uid;
-    db.collection("babi")
+    db.collection("chat")
       .doc(generateId)
       .collection("messages")
       .add({

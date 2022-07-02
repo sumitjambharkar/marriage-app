@@ -3,7 +3,6 @@ import { View, Text, SafeAreaView, StyleSheet, Image, ScrollView } from "react-n
 import {db } from "../firebase";
 import useAuth from "../hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
-import UserAvatar from 'react-native-user-avatar';
 
 
 
@@ -17,20 +16,20 @@ const Profile = () => {
 
 
   useEffect(() => {
-      if (currentUser.uid) {
-        db.collection("users")
-          .doc(currentUser.uid)
-          .onSnapshot((snapshot) => {
-            setData(snapshot.data());
-        });
-      }
-      db.collection("users").doc(currentUser.uid).collection("profile")
-      .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            setSData(doc.data());
+        if (currentUser.uid) {
+          db.collection("users")
+            .doc(currentUser.uid)
+            .onSnapshot((snapshot) => {
+              setData(snapshot.data());
           });
-        });
+        }
+        db.collection("users").doc(currentUser.uid).collection("profile")
+        .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              setSData(doc.data());
+            });
+          });
   }, [currentUser]);
 
   
@@ -57,9 +56,7 @@ const Profile = () => {
           </View>
           
           <View style={styles.logo} >
-             <UserAvatar size={150} name={data.displayName}
-             src={data.image || null }
-             />
+             <Image style={{width:150,height:150,backgroundColor:"#ccc",borderRadius:70}} source={{uri:data.image}}/>
           </View>
          </View>
 
