@@ -14,6 +14,7 @@ const Matches = () => {
   const [profile,setProfile] = useState('')
   const navigation = useNavigation();
   const {currentUser }= useAuth()
+  console.log(profile.gender);
   
   useEffect(() => {
     const unSub= db.collection("users").onSnapshot((snapshot) => {
@@ -69,8 +70,13 @@ const Matches = () => {
       dotStyle={{display:"none"}}
       activeDotStyle={{display:"none"}}
         >
-        {data.map((doc) => (
-          <User key={doc.id} birth={doc.data.birth} getData={getData} uid={doc.data.uid} doc={doc} />
+        {data.map((doc,i) => (
+          <View key={doc.id}>
+          {profile.gender !== doc.data.gender ?
+           <User key={i} birth={doc.data.birth} getData={getData} uid={doc.data.uid} doc={doc} />
+            : null
+          }
+          </View>
         ))}
       </Swiper>
     </View>

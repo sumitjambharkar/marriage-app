@@ -52,10 +52,11 @@ const styles = StyleSheet.create({
     backgroundColor:"#e4910d",
     marginLeft:60,
     marginRight:60,
-    borderRadius:28,
+    borderRadius:24,
     padding:10,
     borderColor:"#ccc",
     borderWidth:1,
+    overflow: "hidden",
   
   }
 });

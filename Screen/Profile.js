@@ -164,6 +164,10 @@ const styles = StyleSheet.create({
     padding: 10,
     letterSpacing:2,
     borderRadius:20,
+    overflow: "hidden",
+    borderRadius:24,
+    borderColor:"black",
+    borderWidth:1,
 
   },
 

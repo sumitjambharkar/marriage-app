@@ -10,38 +10,35 @@ const ChatList = ({doc,selectUser}) => {
   const {currentUser} = useAuth()
   const uid = doc.data.uid
 
-  const [lastMessage,setLastMessage] = useState('')
+  const [lastMessage,setLastMessage] = useState("")
+
+  const generateId = uid > currentUser.uid? currentUser.uid + "-" + uid : uid + "-" + currentUser.uid;  
 
   useEffect(() => {
-    
-      const generateId =
-        uid > currentUser.uid
-          ? currentUser.uid + "-" + uid
-          : uid + "-" + currentUser.uid;  
-      if (generateId) {
-      db.collection("chat").doc(generateId).collection("messages")
+      // if (generateId) {
+      const unSub = db.collection("chat").doc(generateId).collection("messages")
        .orderBy("createdAt", "desc").onSnapshot(snapshot=>(
         setLastMessage(snapshot.docs[0]?.data())
       ))
-    }
-   
+    // }
+    return ()=> unSub()
   }, [])
   
   return (
-   <SafeAreaView>
+   <SafeAreaView style={{width:"100%"}}>
      <TouchableOpacity onPress={()=>selectUser(doc)}>
-        <View style={styles.container}>
+      <View style={styles.container}>
       <View style={styles.profle}>
         <View style={styles.image}>
             <Image style={{width:70,height:70,borderRadius:50}} source={{uri:doc.data.image}} alt="s" />
         </View>
         <View style={styles.name}>
             <Text style={{fontSize:20,fontWeight:"700"}}>{doc.data.displayName}</Text>
-            <Text>{lastMessage.text}</Text>
+            <Text>{lastMessage ? lastMessage.text : null}</Text>
         </View>
       </View>
       <View>
-        <Text>{new Date(lastMessage.createdAt?.toDate()).toLocaleTimeString("en-US",{hour: 'numeric', hour12: true })}</Text>
+        <Text>{lastMessage ? new Date(lastMessage.createdAt?.toDate()).toLocaleTimeString("en-US",{hour: 'numeric', hour12: true }):null}</Text>
       </View>
     </View>
     </TouchableOpacity>
@@ -52,6 +49,7 @@ const ChatList = ({doc,selectUser}) => {
 const styles = StyleSheet.create({
     container : {
         display:"flex",
+        width: "100%",
         justifyContent:"space-between",
         alignContent:"center",
         alignItems:"center",

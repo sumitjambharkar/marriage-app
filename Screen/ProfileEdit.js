@@ -113,7 +113,7 @@ const ProfileEdit = () => {
         </TouchableOpacity>
 
         <View style={styles.form}>
-          <Text style={styles.lable}>Mobile No</Text>
+          <Text style={styles.lable}>Change Mobile No</Text>
 
           <TextInput
             keyboardType="numeric"
@@ -129,7 +129,7 @@ const ProfileEdit = () => {
             </View>
           </TouchableOpacity>
 
-          <Text style={styles.lable}>Email id</Text>
+          <Text style={styles.lable}>Change Email id</Text>
 
           <TextInput
             onChangeText={(text) => setEmail(text)}
@@ -144,7 +144,7 @@ const ProfileEdit = () => {
             </View>
           </TouchableOpacity>
 
-          <Text style={styles.lable}>Password</Text>
+          <Text style={styles.lable}>Change Password</Text>
 
           <TextInput
             onChangeText={(text) => setPassword(text)}
@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     borderColor: "black",
     borderWidth: 1,
+    overflow: "hidden",
   },
 });
 
