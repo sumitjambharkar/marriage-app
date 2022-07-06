@@ -82,11 +82,10 @@ const ProfileEdit = () => {
     console.log(result);
     if (!result.cancelled) {
       try {
-        const imgRef = ref(storage, "image.jpg");
+        const imgRef =ref(storage,`avatar/${new Date().getTime()} - ${result.uri.split('/').pop()}`)
         const img = await fetch(result.uri);
         const bytes = await img.blob();
         const snap = await uploadBytes(imgRef, bytes);
-        console.log(snap.ref.fullPath);
         const url = await getDownloadURL(ref(storage, snap.ref.fullPath));
         await updateDoc(doc(db, "users", currentUser.uid), {
           image: url,
