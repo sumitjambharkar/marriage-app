@@ -44,7 +44,7 @@ const SignScreen = () => {
           password,
         );
         await createUserCollecton(user, { displayName,birth, number, gender,profile });
-        navigation.navigate('ProfileDetails') 
+        navigation.navigate('Personal Details') 
         
       }catch (err) {
         navigation.navigate('SignUp')
@@ -97,7 +97,7 @@ const SignScreen = () => {
                 >
                   <Select.Item label="My Son" value="My Son" />
                   <Select.Item label="My Self" value="My Self" />
-                  <Select.Item label="My Doughter" value="My Doughter" />
+                  <Select.Item label="My Daughter" value="My Daughter" />
                   <Select.Item label="My Sister" value="My Sister" />
                   <Select.Item label="My Brother" value="My Brother" />
                 </Select>

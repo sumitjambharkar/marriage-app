@@ -105,7 +105,8 @@ const ProfileEdit = () => {
       <ScrollView>
         <TouchableOpacity onPress={pickImage}>
           <View style={styles.img}>
-          <Image style={{width:150,height:150,backgroundColor:"#ccc",borderRadius:70}} source={{uri:data.image}}/>
+          <Image style={{width:150,height:150,backgroundColor:"#DEDEDE",borderRadius:70}} source={{uri:data.image}}/>
+          <Text style={{backgroundColor:"red",fontSize:24,width:"10%",borderRadius:24,textAlign:"center",marginTop:150,position:"absolute",color:"white"}}>+</Text>
             <Text style={{ paddingTop: 15, fontSize: 26 }}>
               {data.displayName}
             </Text>
@@ -182,6 +183,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffa500",
     alignItems: "center",
     padding: 15,
+    position:"relative"
   },
   lable: {
     fontSize: 18,

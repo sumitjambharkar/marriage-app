@@ -56,7 +56,7 @@ const Profile = () => {
           </View>
           
           <View style={styles.logo} >
-             <Image style={{width:150,height:150,backgroundColor:"#ccc",borderRadius:70}} source={{uri:data.image}}/>
+             <Image style={{width:150,height:150,backgroundColor:"#DEDEDE",borderRadius:70}} source={{uri:data.image}}/>
           </View>
          </View>
 

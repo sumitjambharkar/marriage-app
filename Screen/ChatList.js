@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     image : {
         width:70,
         height:70,
-        backgroundColor:"gray",
+        backgroundColor:"#DEDEDE",
         borderRadius:50
     },
     name : {

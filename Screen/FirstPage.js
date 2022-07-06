@@ -66,7 +66,7 @@ const FirstPage = () => {
           })
             
         }
-      navigation.navigate('Details')
+      navigation.navigate('Religion Details')
       }
     }
     

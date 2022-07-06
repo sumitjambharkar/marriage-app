@@ -26,8 +26,8 @@ const StackNavigation = () => {
       {currentUser ? (
     <>
     <Stack.Group>
-    <Stack.Screen name="ProfileDetails"component={FirstPage} />
-    <Stack.Screen name="Details"component={TwoPage}  /> 
+    <Stack.Screen name="Personal Details"component={FirstPage} />
+    <Stack.Screen name="Religion Details"component={TwoPage}  /> 
     <Stack.Screen name="Home"component={Home} options={{ headerShown: false}} />
     <Stack.Screen name="Chat"component={Chat} />
     <Stack.Screen name="SendMessage"component={Message} options={({ route }) => ({ title :route.params.displayName })} />

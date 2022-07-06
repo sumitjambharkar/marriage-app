@@ -70,13 +70,8 @@ const Matches = () => {
       dotStyle={{display:"none"}}
       activeDotStyle={{display:"none"}}
         >
-        {data.map((doc,i) => (
-          <View key={doc.id}>
-          {profile.gender !== doc.data.gender ?
-           <User key={i} birth={doc.data.birth} getData={getData} uid={doc.data.uid} doc={doc} />
-            : null
-          }
-          </View>
+        {data.filter((doc)=>(profile.gender!==doc.data.gender)).map((doc,i) => (
+          <User key={i} birth={doc.data.birth} getData={getData} uid={doc.data.uid} doc={doc} />
         ))}
       </Swiper>
     </View>
