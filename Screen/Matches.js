@@ -13,11 +13,11 @@ const Matches = () => {
   const [data, setData] = useState([]);
   const [profile,setProfile] = useState('')
   const navigation = useNavigation();
-  const {currentUser }= useAuth()
-  console.log(profile.gender);
+  const {currentUser } = useAuth()
+
   
   useEffect(() => {
-    const unSub= db.collection("users").onSnapshot((snapshot) => {
+    const unSub = db.collection("users").onSnapshot((snapshot) => {
       setData(
         snapshot.docs
         .filter((doc)=>(doc.id!==currentUser.uid))
