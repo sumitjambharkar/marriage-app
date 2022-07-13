@@ -22,15 +22,15 @@ const Profile = () => {
             .onSnapshot((snapshot) => {
               setData(snapshot.data());
           });
-        }
-        db.collection("users").doc(currentUser.uid).collection("profile")
-        .get()
+          db.collection("users").doc(currentUser.uid).collection("profile")
+          .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
               setSData(doc.data());
             });
           });
-  }, [currentUser]);
+        }
+  }, []);
 
   
   

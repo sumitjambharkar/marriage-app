@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import {KeyboardAvoidingView, Box, Text, Heading, VStack, FormControl, Input, Link, Button, HStack, Center, NativeBaseProvider } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginScreen = () => {
@@ -15,6 +15,9 @@ const LoginScreen = () => {
     console.log(email,password);
       try{
         const result = await signInWithEmailAndPassword(auth, email, password);
+        db.collection("users").doc(result.user.uid).update({
+          isOnline:true
+        })
         console.log(result);
         navigation.navigate("Home")
       }catch (error) {
